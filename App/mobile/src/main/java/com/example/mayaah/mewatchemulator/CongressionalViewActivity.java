@@ -79,6 +79,7 @@ public class CongressionalViewActivity extends Activity{
                 String Slecteditem = itemname[+position];
 //                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getBaseContext(), DetailedViewActivity.class);
+                    intent.putExtra("POSITION", position);
                     startActivity(intent);
 
             }

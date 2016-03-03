@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), CongressionalViewActivity.class);
                 startActivity(intent);
 
+                Intent watchIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
+                startService(watchIntent);
+
             }
         });
 
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 Intent intent = new Intent(getBaseContext(), CongressionalViewActivity.class);
                 startActivity(intent);
+
+                Intent watchIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
+                startService(watchIntent);
 
             }
         });
