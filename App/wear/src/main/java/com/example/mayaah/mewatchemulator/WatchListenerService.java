@@ -14,7 +14,7 @@ public class WatchListenerService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Intent intent = new Intent(this, WCongressionalViewActivity.class);
+        Intent intent = new Intent(this, GridViewFragmentActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
