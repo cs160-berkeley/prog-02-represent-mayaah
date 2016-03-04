@@ -8,7 +8,10 @@ import android.support.wearable.view.DotsPageIndicator;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -25,39 +28,23 @@ public class GridViewFragmentActivity extends FragmentActivity {
 
         final String[][] data = {
                 { "Row 0, Col 0", "Row 0, Col 1", "Row 0, Col 2" },
-                { "Row 1, Col 0", "Row 1, Col 1", "Row 1, Col 2" },
-                { "Row 2, Col 0", "Row 2, Col 1", "Row 2, Col 2" }
         };
+
+        final String[][] name={
+                {"Senator Dianne Feinstein", "Senator Barbara Boxer", "Representative Doris Matsui"}
+        };
+
+        final String[][] party={
+                {"Democrat", "Democrat", "Democrat"}
+        };
+
+
 
         mPageIndicator = (DotsPageIndicator) findViewById(R.id.page_indicator);
         mViewPager = (GridViewPager) findViewById(R.id.pager);
 
-        mViewPager.setAdapter(new GridPagerAdapter(getFragmentManager(), data));
+        mViewPager.setAdapter(new MyGridPagerAdapter(getFragmentManager(), name));
         mPageIndicator.setPager(mViewPager);
     }
 
-    private static final class GridPagerAdapter extends FragmentGridPagerAdapter {
-
-        String[][] mData;
-
-        private GridPagerAdapter(FragmentManager fm, String[][] data) {
-            super(fm);
-            mData = data;
-        }
-
-        @Override
-        public Fragment getFragment(int row, int column) {
-            return (CardFragment.create("CardFragment", mData[row][column]));
-        }
-
-        @Override
-        public int getRowCount() {
-            return mData.length;
-        }
-
-        @Override
-        public int getColumnCount(int row) {
-            return mData[row].length;
-        }
-    }
 }
