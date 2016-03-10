@@ -5,6 +5,8 @@
     <!-- Required to act as a custom watch face. -->
     <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +23,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyAMV5U4Dgwx5oDhdAG27Eimz5PE3tDTqdo"/>
+
         </activity>
         <activity
             android:label="@string/app_name"
@@ -35,6 +41,11 @@
             android:name=".DetailedViewActivity" >
         </activity>
         <service android:name=".PhoneToWatchService" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAMV5U4Dgwx5oDhdAG27Eimz5PE3tDTqdo"/>
+
+
     </application>
 
 </manifest>

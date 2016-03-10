@@ -54,7 +54,7 @@ public class WatchToPhoneService extends Service {
                 //first, connect to the apiclient
                 mApiClient.connect();
                 //now that you're connected, send a massage with the cat name
-                sendMessage("/", "watsup");
+                sendMessage("/", "os");
             }
         }).start();
 
