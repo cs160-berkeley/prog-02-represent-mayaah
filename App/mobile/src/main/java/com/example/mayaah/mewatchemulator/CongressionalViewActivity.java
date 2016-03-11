@@ -65,6 +65,8 @@ public class CongressionalViewActivity extends Activity{
             "Looking forward to it!"
     };
 
+    String[] itembioguide;
+
 
 
     @Override
@@ -93,8 +95,13 @@ public class CongressionalViewActivity extends Activity{
                         // TODO Auto-generated method stub
                         String Slecteditem = itemname[+position];
 //                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
+                        Bundle b=new Bundle();
+                        b.putStringArray("itemname", itemname);
+                        b.putStringArray("itembioguide", itembioguide);
+                        b.putInt("POSITION", position);
                         Intent intent = new Intent(getBaseContext(), DetailedViewActivity.class);
-                        intent.putExtra("POSITION", position);
+                        intent.putExtras(b);
+//                        intent.putExtra("POSITION", position);
                         startActivity(intent);
 
                     }
@@ -158,23 +165,28 @@ public class CongressionalViewActivity extends Activity{
         String[] partyList = new String[jsonArray.length()];
         String[] emailList = new String[jsonArray.length()];
         String[] websiteList = new String[jsonArray.length()];
+        String[] bioguideList = new String[jsonArray.length()];
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonPart = jsonArray.getJSONObject(i);
             String firstName = jsonPart.getString("first_name");
             String lastName = jsonPart.getString("last_name");
-            nameList[i] = (firstName + lastName);
+            String title = jsonPart.getString("title");
+            nameList[i] = (title + " " + firstName + " " + lastName);
             String party = jsonPart.getString("party");
             partyList[i] = party;
             String email = jsonPart.getString("oc_email");
             emailList[i] = email;
             String website = jsonPart.getString("website");
             websiteList[i] = website;
+            String bioguideid = jsonPart.getString("bioguide_id");
+            bioguideList[i] = bioguideid;
         }
         itemname = nameList;
         itemparty = partyList;
         itememail = emailList;
         itemwebsite = websiteList;
+        itembioguide = bioguideList;
     }
 
     private boolean isNetworkAvailable() {
