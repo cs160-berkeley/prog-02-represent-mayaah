@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.mayaah.mewatchemulator.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:background="#ac0000">
+    android:background="@drawable/welcome">
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,8 +35,10 @@
         android:layout_alignStart="@+id/textView"
         android:layout_marginTop="54dp"
         android:layout_alignEnd="@+id/textView"
-        android:text="zip code"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:hint="ZIP CODE"
+        android:textColorHint="#ffffff"
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +60,8 @@
         android:layout_alignStart="@+id/editText"
         android:layout_alignEnd="@+id/editText"
         android:background="#73ffffff"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

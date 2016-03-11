@@ -5,8 +5,12 @@ package com.example.mayaah.mewatchemulator;
  */
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Button;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -18,15 +22,29 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+
+import com.squareup.okhttp.Callback;
+
 
 public class CongressionalViewActivity extends Activity{
 
+
+    private String mLocation;
+
     ListView list;
-    String[] itemname ={
-            "Senator Dianne Feinstein",
-            "Senator Barbara Boxer",
-            "Representaive Doris Matsui"
-    };
+    String[] itemname;
 
     Integer[] imgid={
             R.drawable.feinstein,
@@ -35,23 +53,11 @@ public class CongressionalViewActivity extends Activity{
 
     };
 
-    String[] itemparty ={
-            "Democrat",
-            "Democrat",
-            "Democrat"
-    };
+    String[] itemparty;
 
-    String[] itememail ={
-            "senator@feinstein.senate.gov",
-            "senator@boxer.senate.gov",
-            "dorislovesamerica@gmail.com"
-    };
+    String[] itememail;
 
-    String[] itemwebsite ={
-            "http://www.feinstein.senate.gov",
-            "http://boxer.senate.gov",
-            "https://matsui.house.gov"
-    };
+    String[] itemwebsite;
 
     String[] itemtweet ={
             "#BlackHistoryMonth: My friend Willie Brown was the first African-American mayor of San Francisco.",
@@ -63,26 +69,121 @@ public class CongressionalViewActivity extends Activity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Toast.makeText(this,"why", Toast.LENGTH_LONG).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.congressional_view);
 
-        CustomListAdapter adapter=new CustomListAdapter(this, itemname, imgid, itemparty, itememail, itemwebsite, itemtweet);
-        list=(ListView)findViewById(R.id.list);
-        list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new OnItemClickListener() {
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        mLocation = extras.getString("Location");
 
+        Runnable displayInfo = new Runnable() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // TODO Auto-generated method stub
-                String Slecteditem = itemname[+position];
-//                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getBaseContext(), DetailedViewActivity.class);
-                    intent.putExtra("POSITION", position);
-                    startActivity(intent);
+            public void run() {
+                CustomListAdapter adapter=new CustomListAdapter(CongressionalViewActivity.this, itemname, imgid, itemparty, itememail, itemwebsite, itemtweet);
+                list=(ListView)findViewById(R.id.list);
+                list.setAdapter(adapter);
 
+                list.setOnItemClickListener(new OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        // TODO Auto-generated method stub
+                        String Slecteditem = itemname[+position];
+//                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getBaseContext(), DetailedViewActivity.class);
+                        intent.putExtra("POSITION", position);
+                        startActivity(intent);
+
+                    }
+                });
             }
-        });
+        };
+
+        getLegislators(mLocation, displayInfo);
+
+
+    }
+
+    public void getLegislators(String zipcode, final Runnable runnable) {
+        String apiKey = "9dd30236d3784021854ae939c949c418";
+        String legislatorsURL = "https://congress.api.sunlightfoundation.com/legislators/locate?apikey=" + apiKey + "&zip=" + zipcode;
+
+        if (isNetworkAvailable()){
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(legislatorsURL)
+                    .build();
+            Call call = client.newCall(request);
+            call.enqueue(new Callback() {
+
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    try {
+                        String jsonData = response.body().string();
+                        Log.v("jsondata", jsonData);
+
+                        if (response.isSuccessful()) {
+                            getInfo(jsonData);
+                            runOnUiThread(runnable);
+                        } else {
+                            Toast.makeText(CongressionalViewActivity.this, "idk", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }  else {
+            Toast.makeText(this, "network unavailable", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void getInfo(String jsonData) throws JSONException {
+        JSONObject legislatorsData = new JSONObject(jsonData);
+        String legislatorsInfo = legislatorsData.getString("results");
+        Log.i("legistlaors Info", legislatorsInfo);
+        JSONArray jsonArray = new JSONArray(legislatorsInfo);
+        String[] nameList = new String[jsonArray.length()];
+        String[] partyList = new String[jsonArray.length()];
+        String[] emailList = new String[jsonArray.length()];
+        String[] websiteList = new String[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonPart = jsonArray.getJSONObject(i);
+            String firstName = jsonPart.getString("first_name");
+            String lastName = jsonPart.getString("last_name");
+            nameList[i] = (firstName + lastName);
+            String party = jsonPart.getString("party");
+            partyList[i] = party;
+            String email = jsonPart.getString("oc_email");
+            emailList[i] = email;
+            String website = jsonPart.getString("website");
+            websiteList[i] = website;
+        }
+        itemname = nameList;
+        itemparty = partyList;
+        itememail = emailList;
+        itemwebsite = websiteList;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 }
