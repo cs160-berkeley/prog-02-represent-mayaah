@@ -83,75 +83,114 @@ public class DetailedViewActivity extends Activity{
 
         String apiKey = "9dd30236d3784021854ae939c949c418";
         String legislatorsURL = "https://congress.api.sunlightfoundation.com/bills?sponsor_id=" + itembioguide[pos] + "&apikey=" + apiKey;
+        String commURL = "https://congress.api.sunlightfoundation.com/committees?member_ids=" + itembioguide[pos] + "&apikey=" + apiKey;
+        String termURL = "https://congress.api.sunlightfoundation.com/legislators?bioguide_id=" + itembioguide[pos] + "&apikey=" + apiKey;
 
 
         DownloadTask task = new DownloadTask();
-        task.execute(legislatorsURL);
+        task.execute(legislatorsURL, commURL, termURL);
 
 
     }
 
-    public class DownloadTask extends AsyncTask<String, Void, String> {
+    public class DownloadTask extends AsyncTask<String, Void, String[]> {
         @Override
-        protected String doInBackground(String... urls) {
+        protected String[] doInBackground(String... urls) {
 
-            String result = "";
-            URL url;
-            HttpURLConnection urlConnection = null;
 
-            try {
-                System.out.println("plsplsletmeletmeletmegetwhatiwnat");
-                url = new URL(urls[0]);
 
-                urlConnection = (HttpURLConnection) url.openConnection();
 
-                InputStream in = urlConnection.getInputStream();
 
-                InputStreamReader reader = new InputStreamReader(in);
+            // Getting JSON from URL
+            String[] results = new String[3];
 
-                int data = reader.read();
+            for (int i = 0; i < 3; i++) {
+                String result = "";
+                URL url;
+                HttpURLConnection urlConnection = null;
+                try {
+                    System.out.println("plsplsletmeletmeletmegetwhatiwnat");
+                    url = new URL(urls[i]);
 
-                while (data != -1) {
+                    urlConnection = (HttpURLConnection) url.openConnection();
 
-                    char current = (char) data;
+                    InputStream in = urlConnection.getInputStream();
 
-                    result += current;
+                    InputStreamReader reader = new InputStreamReader(in);
 
-                    data = reader.read();
+                    int data = reader.read();
 
+                    while (data != -1) {
+
+                        char current = (char) data;
+
+                        result += current;
+
+                        data = reader.read();
+
+                    }
+
+                    results[i] = result;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-                return result;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
-            return null;
+            return results;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(String[] results) {
+            super.onPostExecute(results);
             System.out.println("TRIGYRINGYIRN");
             String billListString = new String();
+            String commListString = new String();
+            String termInfo = new String();
+
             try {
                 System.out.println("intryintryintry");
-                JSONObject legislatorsData = new JSONObject(result);
+                System.out.println(results[0]);
+                System.out.println(results[1]);
+                JSONObject legislatorsData = new JSONObject(results[0]);
+                JSONObject commData = new JSONObject(results[1]);
+                JSONObject termData = new JSONObject(results[2]);
                 String legislatorsInfo = legislatorsData.getString("results");
+                String commInfo = commData.getString("results");
+                String termz = termData.getString("results");
+                JSONArray termArray = new JSONArray(termz);
+                JSONObject termObject = termArray.getJSONObject(0);
+                System.out.println(termObject);
+
+                termInfo = termObject.getString("term_end");
+                System.out.println(termInfo);
                 JSONArray jsonArray = new JSONArray(legislatorsInfo);
-                String[] billList = new String[5];
+                JSONArray commArray = new JSONArray(commInfo);
+//                JSONArray termArray = new JSONArray(termInfo);
+//                System.out.println(termArray);
+//                termEnd = termArray.get("term_end");
+
 
                 for (int i = 0; i < 5; i++) {
                     JSONObject jsonPart = jsonArray.getJSONObject(i);
+                    JSONObject commPart = commArray.getJSONObject(i);
                     String shortTitle = jsonPart.getString("short_title");
-                    billList[i] = shortTitle;
-                    billListString += shortTitle + ",";
+                    String commName = commPart.getString("name");
 
+                    if (!shortTitle.equals("null")) {
+                        if (i < 4) {
+                            billListString += " " + shortTitle + " - ";
+                            commListString += " " + commName + " - ";
+                        } else {
+                            billListString += " " + shortTitle;
+                            commListString += " " + commName;
+                        }
+                    }
                 }
-                itembills = billList;
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -164,8 +203,8 @@ public class DetailedViewActivity extends Activity{
 
             nameTxt.setText(itemname[pos]);
             imageView.setImageResource(imgid[pos]);
-            termTxt.setText("Term ends: " + itemterm[pos]);
-            commTxt.setText("Committees " + itemcomm[pos]);
+            termTxt.setText("Term ends: " + termInfo);
+            commTxt.setText("Committees: " + commListString);
             System.out.println(itembills);
             billsTxt.setText("Recent Bills: " + billListString);
         }
