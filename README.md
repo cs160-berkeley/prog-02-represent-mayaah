@@ -1,20 +1,15 @@
 # PROG 02: Represent!
 
-Briefly describe your app here.
+An app that helps you find out the representatives in your area.
 
 ## Authors
 
-FirstName LastName ([your_email@berkeley.edu](mailto:your_email@berkeley.edu))
+Maya Angelica Hernandez ([mayaah@berkeley.edu](mailto:mayaah@berkeley.edu))
 
 ## Demo Video
 
-See [your demo video title here] (https://link_to_your_video)
+See [your demo video title here] (https://youtu.be/XqsstjhEy7Y)
 
 ## Screenshots
 
 <img src="screenshots/main.png" height="400" alt="Screenshot"/>
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Any other support
