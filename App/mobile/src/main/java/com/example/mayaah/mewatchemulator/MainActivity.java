@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(getBaseContext(), CongressionalViewActivity.class);
-                Toast.makeText(MainActivity.this, String.valueOf(lltoZip), Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this, String.valueOf(lltoZip), Toast.LENGTH_LONG).show();
                 intent.putExtra("Location", lltoZip);
                 startActivity(intent);
 

@@ -6,6 +6,7 @@ package com.example.mayaah.mewatchemulator;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -153,6 +154,7 @@ public class DetailedViewActivity extends Activity{
             String billListString = new String();
             String commListString = new String();
             String termInfo = new String();
+            String party = new String();
 
             try {
                 System.out.println("intryintryintry");
@@ -169,7 +171,7 @@ public class DetailedViewActivity extends Activity{
                 System.out.println(termObject);
 
                 termInfo = termObject.getString("term_end");
-                String party = termObject.getString("party");
+                party = termObject.getString("party");
                 LinearLayout detailedBackground =(LinearLayout)findViewById(R.id.background);
                 if (party.equals("R")) {
                     detailedBackground.setBackgroundResource(R.drawable.reddetailed);
@@ -206,6 +208,7 @@ public class DetailedViewActivity extends Activity{
             }
             System.out.println("WHaaaaaat");
             TextView nameTxt = (TextView) findViewById(R.id.name);
+            TextView partyTxts = (TextView) findViewById(R.id.party);
             ImageView imageView = (ImageView) findViewById(R.id.icon);
             TextView termTxt = (TextView) findViewById(R.id.term);
             TextView commTxt = (TextView) findViewById(R.id.comm);
@@ -213,6 +216,12 @@ public class DetailedViewActivity extends Activity{
 
             nameTxt.setText(itemname[pos]);
             nameTxt.setTypeface(custom_font);
+            if (party.equals("D")) {
+                partyTxts.setText("Democrat");
+            } else {
+                partyTxts.setText("Republican");
+            }
+            partyTxts.setTypeface(custom_font);
             imageView.setImageResource(imgid[pos]);
             termTxt.setText("Term ends: " + termInfo);
             termTxt.setTypeface(custom_font);
