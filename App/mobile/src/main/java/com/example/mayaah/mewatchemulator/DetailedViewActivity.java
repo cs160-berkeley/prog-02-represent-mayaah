@@ -6,12 +6,14 @@ package com.example.mayaah.mewatchemulator;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +42,9 @@ public class DetailedViewActivity extends Activity{
     String[] itembioguide;
 
     Integer[] imgid={
-            R.drawable.feinstein,
-            R.drawable.boxer,
-            R.drawable.matsui,
+            R.drawable.socialwhite,
+            R.drawable.socialwhite,
+            R.drawable.socialwhite,
 
     };
 
@@ -69,7 +71,7 @@ public class DetailedViewActivity extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_view);
-        Toast.makeText(this, "idk", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "idk", Toast.LENGTH_SHORT).show();
         Bundle extras = getIntent().getExtras();
 
         itemname = extras.getStringArray("itemname");
@@ -146,6 +148,7 @@ public class DetailedViewActivity extends Activity{
         @Override
         protected void onPostExecute(String[] results) {
             super.onPostExecute(results);
+            Typeface custom_font = Typeface.createFromAsset(DetailedViewActivity.this.getAssets(), "fonts/Lato-Light.ttf");
             System.out.println("TRIGYRINGYIRN");
             String billListString = new String();
             String commListString = new String();
@@ -166,6 +169,13 @@ public class DetailedViewActivity extends Activity{
                 System.out.println(termObject);
 
                 termInfo = termObject.getString("term_end");
+                String party = termObject.getString("party");
+                LinearLayout detailedBackground =(LinearLayout)findViewById(R.id.background);
+                if (party.equals("R")) {
+                    detailedBackground.setBackgroundResource(R.drawable.reddetailed);
+                } else {
+                    detailedBackground.setBackgroundResource(R.drawable.detailed);
+                }
                 System.out.println(termInfo);
                 JSONArray jsonArray = new JSONArray(legislatorsInfo);
                 JSONArray commArray = new JSONArray(commInfo);
@@ -202,11 +212,15 @@ public class DetailedViewActivity extends Activity{
             TextView billsTxt = (TextView) findViewById(R.id.bills);
 
             nameTxt.setText(itemname[pos]);
+            nameTxt.setTypeface(custom_font);
             imageView.setImageResource(imgid[pos]);
             termTxt.setText("Term ends: " + termInfo);
+            termTxt.setTypeface(custom_font);
             commTxt.setText("Committees: " + commListString);
+            commTxt.setTypeface(custom_font);
             System.out.println(itembills);
             billsTxt.setText("Recent Bills: " + billListString);
+            billsTxt.setTypeface(custom_font);
         }
     }
 

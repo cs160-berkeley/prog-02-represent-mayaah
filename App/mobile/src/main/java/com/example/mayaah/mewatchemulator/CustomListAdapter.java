@@ -5,6 +5,7 @@ package com.example.mayaah.mewatchemulator;
  */
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -56,12 +57,13 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
         nameTxt.setText(itemname[position]);
         nameTxt.setTypeface(custom_font);
-//        imageView.setImageResource(imgid[position]);
+        imageView.setImageResource(imgid[position]);
 //        Toast.makeText(getContext(), itemparty[position], Toast.LENGTH_SHORT).show();
         if (itemparty[position].equals("D")) {
             partyTxt.setText("Democrat");
         } else {
             partyTxt.setText("Republican");
+            partyTxt.setTextColor(Color.RED);
         }
 
         partyTxt.setTypeface(custom_font);

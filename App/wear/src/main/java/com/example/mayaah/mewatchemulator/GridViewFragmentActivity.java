@@ -1,6 +1,7 @@
 package com.example.mayaah.mewatchemulator;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.wearable.view.CardFragment;
@@ -30,13 +31,29 @@ public class GridViewFragmentActivity extends FragmentActivity {
                 { "Row 0, Col 0", "Row 0, Col 1", "Row 0, Col 2" },
         };
 
-        final String[][] name={
-                {"Senator Dianne Feinstein", "Senator Barbara Boxer", "Representative Doris Matsui"}
+        String[][] name = {
+                {"Barbara Boxer", "Dianne Feinstein", "Doris Matsui"}
         };
 
-        final String[][] party={
+        String[][] party={
                 {"Democrat", "Democrat", "Democrat"}
         };
+
+
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        String[] nameArray = extras.getStringArray("itemname");
+//        String[] partyArray = extras.getStringArray("itemparty");
+//        name = new String[0][nameArray.length];
+//        party = new String[0][partyArray.length];
+//        for (int r = 0; r < nameArray.length; r++)
+//        {
+//            for (int c = 0; c < nameArray.length; c++)
+//            {
+//                name[r][c] = nameArray[c];
+//                party[r][c] = partyArray[c];
+//            }
+//        }
 
 
 

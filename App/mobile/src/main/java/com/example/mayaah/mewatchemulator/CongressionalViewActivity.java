@@ -47,9 +47,10 @@ public class CongressionalViewActivity extends Activity{
     String[] itemname;
 
     Integer[] imgid={
-            R.drawable.feinstein,
-            R.drawable.boxer,
-            R.drawable.matsui,
+            R.drawable.social,
+            R.drawable.social,
+            R.drawable.social,
+            R.drawable.social,
 
     };
 
@@ -71,7 +72,7 @@ public class CongressionalViewActivity extends Activity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Toast.makeText(this,"why", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"why", Toast.LENGTH_LONG).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.congressional_view);
 
@@ -141,7 +142,7 @@ public class CongressionalViewActivity extends Activity{
                             getInfo(jsonData);
                             runOnUiThread(runnable);
                         } else {
-                            Toast.makeText(CongressionalViewActivity.this, "idk", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(CongressionalViewActivity.this, "idk", Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (IOException e) {
@@ -187,6 +188,15 @@ public class CongressionalViewActivity extends Activity{
         itememail = emailList;
         itemwebsite = websiteList;
         itembioguide = bioguideList;
+//        Bundle b=new Bundle();
+//        b.putStringArray("itemname", itemname);
+//        b.putStringArray("partyname", itemparty);
+//        Intent watchintent2 = new Intent(getBaseContext(), PhoneToWatchService.class);
+//
+//        watchintent2.putExtras(b);
+////                        intent.putExtra("POSITION", position);
+//        startService(watchintent2);
+
     }
 
     private boolean isNetworkAvailable() {

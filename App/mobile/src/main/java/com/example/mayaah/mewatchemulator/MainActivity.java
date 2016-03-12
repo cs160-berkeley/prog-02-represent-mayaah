@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements
         if (mLastLocation != null) {
             double latitude = (mLastLocation.getLatitude());
             double longitude = (mLastLocation.getLongitude());
-            Toast.makeText(this, String.valueOf(latitude), Toast.LENGTH_LONG).show();
-            Toast.makeText(this, String.valueOf(longitude), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, String.valueOf(latitude), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, String.valueOf(longitude), Toast.LENGTH_LONG).show();
             Geocoder geocoder;
             List<Address> addresses;
             geocoder = new Geocoder(this, Locale.getDefault());
